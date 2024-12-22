@@ -26,9 +26,9 @@ public class GildedRose {
         if(isSpecialItem(item)){
             increaseQuality(item);
             handleSpecialCases(item);
-        } else{
-            decreaseQuality(item);
+            return;
         }
+        decreaseQuality(item);
     }
 
     private boolean isSpecialItem(Item item) {
@@ -68,11 +68,12 @@ public class GildedRose {
         }
         if(item.name.equals("Aged Brie")){
             increaseQuality(item);
-        } else if(item.name.equals("Backstage passes to a TAFKAL80ETC concert")){
+            return;
+        }  if(item.name.equals("Backstage passes to a TAFKAL80ETC concert")){
             item.quality = 0;
-        } else{
-            decreaseQuality(item);
+            return;
         }
+        decreaseQuality(item);
     }
 
 }
