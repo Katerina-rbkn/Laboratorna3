@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemCollection {
-    private List<Item> items;
+    public final List<Item> items;
 
     public ItemCollection() {
         this.items = new ArrayList<>();
@@ -12,10 +12,6 @@ public class ItemCollection {
 
     public void addItem(Item item) {
         items.add(item);
-    }
-
-    public List<Item> getItems() {
-        return items;
     }
 
     @Override

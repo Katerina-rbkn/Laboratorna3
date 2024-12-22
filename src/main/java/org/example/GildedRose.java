@@ -10,6 +10,6 @@ public class GildedRose {
     }
 
     public void updateQuality() {
-        itemUpdater.updateAllItemsQuality(itemCollection.getItems());
+        itemUpdater.updateAllItemsQuality(itemCollection.items);
     }
 }

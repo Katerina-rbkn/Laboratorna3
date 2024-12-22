@@ -6,14 +6,14 @@ public class ItemUpdater {
     public void updateAllItemsQuality(List<Item> items){
         for(Item item : items){
             if(!isLegendary(item)){
-                updateItemQuality(item);
                 updateSellIn(item);
+                updateItemQuality(item);
                 handleExpiredItem(item);
             }
         }
     }
     private boolean isLegendary(Item item){
-        return item.getItemName().equals("Sulfuras, Hand of Ragnaros");
+        return item.itemData.itemName.toString().equals("Sulfuras, Hand of Ragnaros");
     }
     private void updateItemQuality(Item item){
         if(isSpecialItem(item)){
@@ -24,28 +24,22 @@ public class ItemUpdater {
         }
     }
     private boolean isSpecialItem(Item item){
-        StringWrapper itemName = item.getItemName();
-        return itemName.equals("Aged Brie") || itemName.equals("Backstage passes to a TAFKAL80ETC concert");
+        StringWrapper itemName = item.itemData.itemName;
+        return itemName.toString().equals("Aged Brie") || itemName.toString().equals("Backstage passes to a TAFKAL80ETC concert");
     }
-    private void increaseQuality(Item item){
-        IntegerWrapper quality = item.getItemQuality();
-        int currentQuality = quality.getValue();
-        if (currentQuality < 50) {
-            item.setItemQuality(new IntegerWrapper(currentQuality + 1));
-        }
+    private void increaseQuality(Item item) {
+        item.itemData.itemQuality.increment();
     }
-    private void decreaseQuality(Item item){
-        IntegerWrapper quality = item.getItemQuality();
-        int currentQuality = quality.getValue();
-        if (currentQuality > 0) {
-            item.setItemQuality(new IntegerWrapper(currentQuality - 1));
-        }
+
+    private void decreaseQuality(Item item) {
+        item.itemData.itemQuality.decrement();
     }
+
     private void handleSpecialCases(Item item) {
-        StringWrapper itemName = item.getItemName();
-        if (itemName.equals("Backstage passes to a TAFKAL80ETC concert")) {
-            IntegerWrapper daysRemainingWrapper = item.getDaysRemainingBeforeExpiration();
-            int daysRemaining = daysRemainingWrapper.getValue();
+        StringWrapper itemName = item.itemData.itemName;
+        if (itemName.toString().equals("Backstage passes to a TAFKAL80ETC concert")) {
+            IntegerWrapper daysRemainingWrapper = item.itemData.daysRemainingBeforeExpiration;
+            int daysRemaining = daysRemainingWrapper.value;
             if (daysRemaining < 11) {
                 increaseQuality(item);
             }
@@ -55,18 +49,17 @@ public class ItemUpdater {
         }
     }
     private void updateSellIn(Item item){
-        IntegerWrapper daysRemainingWrapper = item.getDaysRemainingBeforeExpiration();
-        int daysRemaining = daysRemainingWrapper.getValue();
-        item.setDaysRemainingBeforeExpiration(new IntegerWrapper(daysRemaining - 1));
+        IntegerWrapper daysRemainingWrapper = item.itemData.daysRemainingBeforeExpiration;
+        daysRemainingWrapper.decrement();
     }
     private void handleExpiredItem(Item item) {
-        IntegerWrapper daysRemainingWrapper = item.getDaysRemainingBeforeExpiration();
-        int daysRemaining = daysRemainingWrapper.getValue();
+        IntegerWrapper daysRemainingWrapper = item.itemData.daysRemainingBeforeExpiration;
+        int daysRemaining = daysRemainingWrapper.value;
         if (daysRemaining < 0) {
-            if (item.getItemName().equals("Aged Brie")) {
+            if (item.itemData.itemName.toString().equals("Aged Brie")) {
                 increaseQuality(item);
-            } else if (item.getItemName().equals("Backstage passes to a TAFKAL80ETC concert")) {
-                item.setItemQuality(new IntegerWrapper(daysRemaining + 1));
+            } else if (item.itemData.itemName.toString().equals("Backstage passes to a TAFKAL80ETC concert")) {
+                item.itemData.itemQuality = new IntegerWrapper(daysRemaining + 1);
             } else {
                 decreaseQuality(item);
             }
