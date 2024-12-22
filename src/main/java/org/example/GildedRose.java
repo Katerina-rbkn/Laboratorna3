@@ -1,13 +1,15 @@
 package org.example;
 
 public class GildedRose {
-    ItemCollection itemCollection;
+    private final ItemCollection itemCollection;
+    private ItemUpdater itemUpdater;
 
     public GildedRose(ItemCollection itemCollection) {
         this.itemCollection = itemCollection;
+        this.itemUpdater = new ItemUpdater();
     }
 
     public void updateQuality() {
-        itemCollection.updateQuality();
+        itemUpdater.updateAllItemsQuality(itemCollection.getItems());
     }
 }
