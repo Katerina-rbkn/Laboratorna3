@@ -25,7 +25,8 @@ public class Items {
         }
     }
     private boolean isLegendary(Item item) {
-        return item.name.getValue().equals("Sulfuras, Hand of Ragnaros");
+        String itemName = item.name.getValue();
+        return itemName.equals("Sulfuras, Hand of Ragnaros");
     }
     private void updateItemQuality(Item item) {
         if(isSpecialItem(item)){
@@ -36,20 +37,24 @@ public class Items {
         decreaseQuality(item);
     }
     private boolean isSpecialItem(Item item) {
-        return item.name.getValue().equals("Aged Brie") || item.name.getValue().equals("Backstage passes to a TAFKAL80ETC concert");
+        String itemName = item.name.getValue();
+        return itemName.equals("Aged Brie") || itemName.equals("Backstage passes to a TAFKAL80ETC concert");
     }
     private void increaseQuality(Item item) {
-        if(item.quality.getValue() < 50){
+        int quality = item.quality.getValue();
+        if(quality < 50){
             item.quality.setValue(item.quality.getValue() + 1);
         }
     }
     private void decreaseQuality(Item item) {
-        if(item.quality.getValue() > 0){
+        int quality = item.quality.getValue();
+        if(quality > 0){
             item.quality.setValue(item.quality.getValue() - 1);
         }
     }
     private void handleSpecialCases(Item item) {
-        if(!item.name.getValue().equals("Backstage passes to a TAFKAL80ETC concert")){
+        String itemName = item.name.getValue();
+        if(!itemName.equals("Backstage passes to a TAFKAL80ETC concert")){
             return;
         }
         if(item.sellIn.getValue() < 11){
@@ -60,13 +65,15 @@ public class Items {
         }
     }
     private void updateSellIn(Item item) {
-        item.sellIn.setValue(item.sellIn.getValue() - 1);
+        int sellIn = item.sellIn.getValue();
+        item.sellIn.setValue(sellIn - 1);
     }
     private void handleExpiredItem(Item item) {
         if(item.sellIn.getValue() >= 0){
             return;
         }
-        if(item.name.getValue().equals("Aged Brie")){
+        String itemName = item.name.getValue();
+        if(itemName.equals("Aged Brie")){
             increaseQuality(item);
             return;
         }
